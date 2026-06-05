@@ -21,7 +21,7 @@ export class TransformInterceptor<T> implements NestInterceptor<T, Response<T>> 
         return {
           success: true,
           message: 'Operation successful',
-          data: data || {},
+          data: data === null || data === undefined ? {} : data,
         };
       }),
     );

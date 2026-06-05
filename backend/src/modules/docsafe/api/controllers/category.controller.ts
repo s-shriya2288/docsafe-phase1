@@ -13,7 +13,7 @@ export class CategoryController {
   @Post()
   @Roles('ADMIN')
   async createCategory(@Req() req: any, @Body() body: CreateCategoryDto) {
-    return this.categoryService.createCategory(req.user.tenantId, body);
+    return this.categoryService.createCategory(req.user.tenantId, body, req.user.userId);
   }
 
   @Get()

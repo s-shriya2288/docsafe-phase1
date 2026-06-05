@@ -21,7 +21,7 @@ export class DashboardService {
     const upcomingRenewals = await this.prisma.renewalRecord.count({ 
       where: { 
         tenant_id: tenantId, 
-        status: 'UPCOMING'
+        status: 'NOT_STARTED'
       } 
     });
 

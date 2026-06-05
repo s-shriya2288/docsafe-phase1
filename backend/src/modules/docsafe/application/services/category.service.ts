@@ -6,12 +6,13 @@ import { CreateCategoryDto } from '../../api/dtos/create-category.dto';
 export class CategoryService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async createCategory(tenantId: string, data: CreateCategoryDto) {
+  async createCategory(tenantId: string, data: CreateCategoryDto, createdBy: string) {
     return this.prisma.category.create({
       data: {
         name: data.name,
         description: data.description,
         tenant_id: tenantId,
+        created_by: createdBy,
       },
     });
   }

@@ -13,7 +13,7 @@ export class DocumentController {
   @Post()
   @Roles('ADMIN', 'USER')
   async createDocument(@Req() req: any, @Body() body: CreateDocumentDto) {
-    return this.documentService.createDocument(req.user.tenantId, body);
+    return this.documentService.createDocument(req.user.tenantId, body, req.user.userId);
   }
 
   @Get()
