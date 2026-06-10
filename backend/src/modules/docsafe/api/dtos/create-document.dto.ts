@@ -1,7 +1,8 @@
-import { IsString, IsOptional, IsUUID, IsDateString } from 'class-validator';
+import { IsString, IsNotEmpty, IsOptional, IsUUID, IsDateString } from 'class-validator';
 
 export class CreateDocumentDto {
   @IsString()
+  @IsNotEmpty()
   title: string;
 
   @IsString()
@@ -9,14 +10,18 @@ export class CreateDocumentDto {
   description?: string;
 
   @IsUUID()
-  @IsOptional()
-  category_id?: string;
+  @IsNotEmpty()
+  category_id: string;
 
   @IsDateString()
-  @IsOptional()
-  issue_date?: string;
+  @IsNotEmpty()
+  issue_date: string;
 
   @IsDateString()
+  @IsNotEmpty()
+  expiry_date: string;
+
+  @IsString()
   @IsOptional()
-  expiry_date?: string;
+  visibility_scope?: string;
 }
