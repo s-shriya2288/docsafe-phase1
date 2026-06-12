@@ -5,15 +5,18 @@ import { CategoryRepository } from './infrastructure/repositories/category.repos
 import { DocumentController } from './api/controllers/document.controller';
 import { DocumentService } from './application/services/document.service';
 import { DocumentRepository } from './infrastructure/repositories/document.repository';
+import { DocumentEventService } from './application/services/document-event.service';
+import { StorageModule } from '../../core/storage/storage.module';
 
 @Module({
-  imports: [],
+  imports: [StorageModule],
   controllers: [CategoryController, DocumentController],
   providers: [
     CategoryService,
     CategoryRepository,
     DocumentService,
     DocumentRepository,
+    DocumentEventService,
   ],
 })
 export class DocsafeModule {}

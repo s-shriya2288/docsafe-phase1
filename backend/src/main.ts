@@ -17,6 +17,14 @@ async function bootstrap() {
   app.useGlobalGuards(new TenantGuard());
   app.useGlobalInterceptors(new TransformInterceptor(), new TenantInterceptor());
   app.useGlobalFilters(new HttpExceptionFilter());
+  
+  // Register fastify-multipart to parse multipart stream uploads
+  await app.register(require('@fastify/multipart'), {
+    limits: {
+      fileSize: 10 * 1024 * 1024, // 10MB limit
+    },
+  });
+
   app.enableCors();
 
   await app.listen(process.env.PORT ?? 3000, '0.0.0.0');

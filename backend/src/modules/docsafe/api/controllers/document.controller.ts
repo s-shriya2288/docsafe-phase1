@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Put, Body, Param, Query, Req, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Put, Body, Param, Query, Req, UseGuards, BadRequestException } from '@nestjs/common';
 import { DocumentService } from '../../application/services/document.service';
 import { CreateDocumentDto } from '../dtos/create-document.dto';
 import { UpdateDocumentDto } from '../dtos/update-document.dto';
@@ -52,6 +52,33 @@ export class DocumentController {
     return {
       success: true,
       message: 'Document updated successfully',
+      data,
+    };
+  }
+
+  @Post(':id/upload')
+  @Roles('ADMIN', 'USER')
+  async uploadFile(@Param('id') id: string, @Req() req: any) {
+    const file = await req.file();
+    if (!file) {
+      throw new BadRequestException('No file uploaded');
+    }
+
+    const data = await this.documentService.uploadFile(id, file.file, file.filename, req.user.userId);
+    return {
+      success: true,
+      message: 'File uploaded successfully',
+      data,
+    };
+  }
+
+  @Get(':id/history')
+  @Roles('ADMIN', 'USER', 'AUDITOR')
+  async getDocumentHistory(@Param('id') id: string) {
+    const data = await this.documentService.getDocumentHistory(id);
+    return {
+      success: true,
+      message: 'Document history logs retrieved successfully',
       data,
     };
   }

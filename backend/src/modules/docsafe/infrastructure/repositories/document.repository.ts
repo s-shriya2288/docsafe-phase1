@@ -26,24 +26,11 @@ export class DocumentRepository {
     uploaded_by: string;
   }): Promise<Document> {
     const tenantId = this.tenantId;
-    return this.prisma.$transaction(async (tx) => {
-      const doc = await tx.document.create({
-        data: {
-          ...data,
-          tenant_id: tenantId,
-        },
-      });
-
-      await tx.documentEvent.create({
-        data: {
-          tenant_id: tenantId,
-          document_id: doc.id,
-          event_type: 'CREATED_DOCUMENT',
-          triggered_by: data.uploaded_by,
-        },
-      });
-
-      return doc;
+    return this.prisma.document.create({
+      data: {
+        ...data,
+        tenant_id: tenantId,
+      },
     });
   }
 
@@ -80,29 +67,15 @@ export class DocumentRepository {
     expiry_date?: Date;
     status?: DocumentStatus;
     visibility_scope?: string;
-  }, userId?: string): Promise<Document> {
+    file_asset_id?: string;
+  }): Promise<Document> {
     const tenantId = this.tenantId;
-    return this.prisma.$transaction(async (tx) => {
-      const doc = await tx.document.update({
-        where: {
-          id,
-          tenant_id: tenantId,
-        },
-        data,
-      });
-
-      if (userId) {
-        await tx.documentEvent.create({
-          data: {
-            tenant_id: tenantId,
-            document_id: doc.id,
-            event_type: 'UPDATED_DOCUMENT',
-            triggered_by: userId,
-          },
-        });
-      }
-
-      return doc;
+    return this.prisma.document.update({
+      where: {
+        id,
+        tenant_id: tenantId,
+      },
+      data,
     });
   }
 }
